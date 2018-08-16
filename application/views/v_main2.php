@@ -677,7 +677,7 @@ License: You must have a valid license purchased only from themeforest(the above
                   </div>
                   <div class="m-portlet__body">
                     <div></div>
-                    <div id="areaChart" style="height:260px;"></div>
+                    <div id="areaChart" class="chart" style="height:260px;"></div>
                   </div>
                 </div>
                 <!--end::Portlet-->
@@ -704,7 +704,7 @@ License: You must have a valid license purchased only from themeforest(the above
                   </div>
                   <div class="m-portlet__body">
                     <div></div>
-                    <div id="barChart" style="height:260px;"></div>
+                    <div id="barChart" class="chart" style="height:260px;"></div>
                   </div>
                 </div>
                 <!--end::Portlet-->
@@ -1029,7 +1029,6 @@ License: You must have a valid license purchased only from themeforest(the above
               {
                 arr1.push(data[i]['tanggal']);
                 arr2.push(data[i]['volume']);
-                // console.log(arr1);
                 chart(arr1,arr2);
               }
           });
@@ -1083,7 +1082,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
             areaChart.render();
             barChart.render();
-
           }
 
           function refresh()

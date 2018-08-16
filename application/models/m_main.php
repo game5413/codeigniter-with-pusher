@@ -17,9 +17,9 @@ class M_main extends CI_Model {
 
 	public function ubah($data)
 	{
-		$this->db->set('tgl_penjualan', $data['tgl_penjualan'], FALSE);
+		$this->db->set('tgl_penjualan', $data['tgl_penjualan']);
 		$this->db->set('vol_penjualan', $data['vol_penjualan'], FALSE);
 		$this->db->where('id_penjualan', $data['id_penjualan']);
-		echo $this->db->get_compiled_update('data_penjualan');
+		echo $this->db->update('data_penjualan');
 	}
 }

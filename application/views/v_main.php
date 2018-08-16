@@ -1040,7 +1040,7 @@ License: You must have a valid license purchased only from themeforest(the above
                   {data: 'no'},
                   {data: 'tanggal'},
                   {data: 'volume'},
-                  {"defaultContent": "<button id='btn_delete'>Delete</button>"}
+                  {"defaultContent": "<button id='btn_edit'>Edit</button> <button id='btn_delete'>Delete</button>"}
                 ]
               });
             });
@@ -1131,7 +1131,7 @@ License: You must have a valid license purchased only from themeforest(the above
                   $("#m_modal_5 #id-value").val(data['id']);
                   $("#m_modal_5 #volume-value").val(data['volume']);
                   $("#m_modal_5 #m_datepicker_2").val(data['tanggal']);
-                  $("#m_modal_5").modal();
+                  $("#m_modal_5").modal('show');
               });
 
                $('#btn_update').click(function() {
@@ -1142,7 +1142,7 @@ License: You must have a valid license purchased only from themeforest(the above
                       data: { ajax:true, id:$('#id-value').val() ,volume:$('#volume-value').val(), tanggal:$('#m_datepicker_2').val() },
                         success: function(response){
                         swal("Sukses!", "Anda berhasil mengubah data!", "success");
-                        // $("#m_modal_5").hide();
+                        $("#m_modal_5").modal('hide');
                         ref();
                         loadData();
                         },
