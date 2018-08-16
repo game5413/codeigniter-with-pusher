@@ -959,7 +959,7 @@ License: You must have a valid license purchased only from themeforest(the above
             },
             {
               field:"Actions", width:110, title:"Actions", sortable:!1, overflow:"visible", template:function(options, e, a) {
-                    return'\t\t\t\t\t\t<div class="dropdown '+(a.getPageSize()-e<=4?"dropup": "")+'">\t\t\t\t\t\t</div>\t\t\t\t\t\t<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details">\t\t\t\t\t\t\t<i class="la la-edit"></i>\t\t\t\t\t\t</a>\t\t\t\t\t\t<button value="' + options.id + '" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" id="btn_delete" title="Delete">\t\t\t\t\t\t\t<i class="la la-trash"></i>\t\t\t\t\t\t</button>\t\t\t\t\t'
+                    return'\t\t\t\t\t\t<div class="dropdown '+(a.getPageSize()-e<=4?"dropup": "")+'">\t\t\t\t\t\t</div>\t\t\t\t\t\t<button id="btn_edit" value="' + options.id + '" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit">\t\t\t\t\t\t\t<i class="la la-edit"></i>\t\t\t\t\t\t</button>\t\t\t\t\t\t<button value="' + options.id + '" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" id="btn_delete" title="Delete">\t\t\t\t\t\t\t<i class="la la-trash"></i>\t\t\t\t\t\t</button>\t\t\t\t\t'
                 }
             }]
           }
@@ -1001,6 +1001,35 @@ License: You must have a valid license purchased only from themeforest(the above
                      }
                 })
               });
+
+        $('.m_datatable').on('click', '#btn_edit', function () {
+          var data = $(this).val();
+          // alert(data);
+          $("#m_modal_5 #id-value").val(data);
+          // $("#m_modal_5 #volume-value").val(data['volume']);
+          // $("#m_modal_5 #m_datepicker_2").val(data['tanggal']);
+          $("#m_modal_5").modal('show');
+          });
+          
+        $('#btn_update').click(function() {
+              $.ajax({
+                  url: '<?php echo site_url('c_main/change') ?>',
+                  method: 'post',
+                  datatype: 'json',
+                  data: { ajax:true, id:$('#id-value').val() ,volume:$('#volume-value').val(), tanggal:$('#m_datepicker_2').val() },
+                    success: function(response){
+                      swal("Sukses!", "Anda berhasil mengubah data!", "success");
+                      $("#m_modal_5").modal('hide');
+                      refresh();
+                      reload();
+                    },
+                    error: function(jqXhr, textStatus, thrown) {
+                      /* Act on the event */
+                      console.log(jqXhr);
+                      console.log(thrown);
+                    }
+                });
+          });
           datatable = $(".m_datatable").mDatatable(options);
 
         }
@@ -1117,5 +1146,37 @@ License: You must have a valid license purchased only from themeforest(the above
           });
         </script>
 </body>
+<div class="modal fade" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group" hidden>
+            <label for="id-value" class="form-control-label">ID:</label>
+            <input type="text" class="form-control m-input" id="id-value">
+          </div>
+          <div class="form-group">
+            <label for="volume-value" class="form-control-label">Volume:</label>
+            <input type="number" class="form-control m-input" id="volume-value">
+          </div>
+          <div class="form-group">
+            <label for="m_datepicker_2" class="form-control-label">Tanggal:</label>
+            <input type="text" class="form-control" id="m_datepicker_2" readonly="" placeholder="Select date"></input>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a class="btn btn-primary" id="btn_update" role="button">Update</a>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- end::Body -->
 </html>
