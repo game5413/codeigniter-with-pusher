@@ -712,6 +712,9 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
           </div>
 
+      <div class ="m-content">
+        <div class="row">
+          <div class="col-lg-12">
             <div class="m-portlet m-portlet--mobile">
               <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
@@ -846,6 +849,9 @@ License: You must have a valid license purchased only from themeforest(the above
           </div>
         </div>
       </div>
+      </div>
+      </div>
+      </div>
                             
     <!-- begin::Quick Nav --> 
       <!--begin::Base Scripts -->
@@ -880,15 +886,11 @@ License: You must have a valid license purchased only from themeforest(the above
             data: {
                 type:"local",
                 source: data.data,
-                pageSize: 10,
-                serverPaging: true,
-                serverFiltering: true,
-                serverSorting: true,
-                autoColumns: true
+                pageSize: 5
             },
             layout: {
                 theme: 'default',
-                scroll: true,
+                scroll: false,
                 footer: false,
                   icons: {
                       sort: {
@@ -917,7 +919,7 @@ License: You must have a valid license purchased only from themeforest(the above
                           last: true
                         },
 
-                      pageSizeSelect: [10, 20, 30, 50, 100]
+                      pageSizeSelect: [5, 10, 15, 20, 25]
                     }
                 }
             },
@@ -944,22 +946,15 @@ License: You must have a valid license purchased only from themeforest(the above
                 }
             },
             search: {
-                onEnter: true,
+                // onEnter: true,
                 input: $("#generalSearch")
             },
             columns:[
-            {
-              field: "no", title: "#", sortable: !1, width: 40, selector: !1, textAlign: "center"
-            },
-            {
-              field: "tanggal", title: "Tanggal", filterable: !1, width: 150, type: "date", format: "MM/DD/YYYY"
-            },
-            {
-              field: "volume", title: "Volume", type: "number"
-            },
-            {
-              field:"Actions", width:110, title:"Actions", sortable:!1, overflow:"visible", template:function(options, e, a) {
-                    return'\t\t\t\t\t\t<div class="dropdown '+(a.getPageSize()-e<=4?"dropup": "")+'">\t\t\t\t\t\t</div>\t\t\t\t\t\t<button id="btn_edit" value="' + options.id + '" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit">\t\t\t\t\t\t\t<i class="la la-edit"></i>\t\t\t\t\t\t</button>\t\t\t\t\t\t<button value="' + options.id + '" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" id="btn_delete" title="Delete">\t\t\t\t\t\t\t<i class="la la-trash"></i>\t\t\t\t\t\t</button>\t\t\t\t\t'
+            { field: "no", title: "#", sortable: !1, width: 40, selector: !1, textAlign: "center" },
+            { field: "tanggal", title: "Tanggal", filterable: !1, width: 150, type: "date", format: "MM/DD/YYYY" },
+            { field: "volume", title: "Volume", type: "number" },
+            { field:"Actions", width:110, title:"Actions", sortable:!1, overflow:"visible", template:function(options, e, a) {
+                    return'\t\t\t\t\t\t<div class="dropdown '+(a.getPageSize()-e<=4?"dropup": "")+'">\t\t\t\t\t\t</div>\t\t\t\t\t\t<button id="btn_edit" value="' + options.id + '" tanggal="' + options.tanggal + '" volume="' + options.volume + '" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit">\t\t\t\t\t\t\t<i class="la la-edit"></i>\t\t\t\t\t\t</button>\t\t\t\t\t\t<button value="' + options.id + '" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" id="btn_delete" title="Delete">\t\t\t\t\t\t\t<i class="la la-trash"></i>\t\t\t\t\t\t</button>\t\t\t\t\t'
                 }
             }]
           }
@@ -1004,10 +999,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
         $('.m_datatable').on('click', '#btn_edit', function () {
           var data = $(this).val();
-          // alert(data);
+          var tgl = $(this).attr('tanggal');
+          var vol = $(this).attr('volume');
+          // alert(vol);
           $("#m_modal_5 #id-value").val(data);
-          // $("#m_modal_5 #volume-value").val(data['volume']);
-          // $("#m_modal_5 #m_datepicker_2").val(data['tanggal']);
+          $("#m_modal_5 #volume-value").val(vol);
+          $("#m_modal_5 #m_datepicker_2").val(tgl);
           $("#m_modal_5").modal('show');
           });
           

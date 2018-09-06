@@ -39,6 +39,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="<?php echo base_url('assets/assets/vendors/base/vendors.bundle.css') ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url('assets/assets/demo/default/base/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url('assets/asd/css/datatables.min.css') ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url('assets/asd/css/responsive.dataTables.min.css') ?>" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
     <!--end::Base Styles -->
     <link rel="shortcut icon" href="<?php echo base_url('assets/assets/demo/default/media/img/logo/favicon.ico') ?>" />
@@ -713,6 +714,9 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
           </div> 
             
+            <div class ="m-content">
+            <div class="row">
+            <div class="col-lg-12">
             <div class="m-portlet m-portlet--mobile">
               <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
@@ -805,9 +809,9 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
               </div>
               <div class="m-portlet__body">
-    <!--begin: Datatable -->
+              <!--begin: Datatable -->
                 <div class="m_datatable" id="ajax_data"></div>
-                <table id="datatable_1" style="width: 100%;">
+                <table id="datatable_1" class="dt-responsive" style="width: 100%;">
                   <thead>
                     <tr>
                       <th>No</th>
@@ -828,6 +832,9 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!--end: Datatable -->
               </div>
               </div>
+              </div>
+              </div>
+              </div>
           </div>
         </div>
       </div>
@@ -844,9 +851,11 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="<?php echo base_url('assets/assets/demo/default/custom/components/forms/widgets/bootstrap-datepicker.js') ?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/assets/app/js/dashboard.js') ?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/asd/js/datatables.min.js') ?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/asd/js/dataTables.responsive.min.js') ?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/amcharts.js') ?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/serial.js') ?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/dataloader.min.js') ?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/check_sw.js') ?>" type="text/javascript"></script>
     <!-- <script src="<?php echo base_url('assets/assets/demo/default/custom/components/base/sweetalert2.js') ?>" type="text/javascript"></script> -->
     <script src="https://js.pusher.com/4.2/pusher.min.js"></script>
     <!--end::Page Snippets -->
@@ -987,34 +996,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
             LineChart.animateAgain();
       }
-      /*function chart(data)
-      {
-
-        var channel2 = pusher.subscribe('my-chart');
-          channel2.bind('pusher:subscription_succeeded', function() {
-            $.ajax({
-              url: '<?php echo site_url('c_main/go') ?>',
-              datatype: 'json',
-                success: function(response){
-                },
-                error: function(jqXhr, textStatus, thrown) {
-                  console.log(jqXhr);
-                  console.log(thrown);
-                }
-          });
-
-          channel2.bind('my-amchart', function(data) {
-            LineChart.dataProvider = data;
-            LineChart.validateData();
-
-            BarChart.dataProvider = data;
-            BarChart.validateData();
-
-         });
-
-        });
-
-      }*/
             
           var channel = pusher.subscribe('my-channel');
             channel.bind('pusher:subscription_succeeded', function() {
@@ -1037,11 +1018,15 @@ License: You must have a valid license purchased only from themeforest(the above
                 'pageLength' : 5,
                 data: data.data,
                 columns: [
-                  {data: 'no'},
-                  {data: 'tanggal'},
-                  {data: 'volume'},
+                  {data: 'no', responsivePriority: 1},
+                  {data: 'tanggal', responsivePriority: 2},
+                  {data: 'volume', responsivePriority: 3},
                   {"defaultContent": "<button id='btn_edit'>Edit</button> <button id='btn_delete'>Delete</button>"}
-                ]
+                ],
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: true
               });
             });
 
@@ -1053,7 +1038,8 @@ License: You must have a valid license purchased only from themeforest(the above
                 $('#datatable_1').DataTable({
                   'destroy': true,
                   'pageLength' : 5,
-                  ajax: '<?php echo site_url('c_main/cari') ?>'
+                  ajax: '<?php echo site_url('c_main/cari') ?>',
+                  responsive: true
                 });
           }
 
@@ -1085,7 +1071,15 @@ License: You must have a valid license purchased only from themeforest(the above
                 });
 
                $('#datatable_1 tbody').on( 'click', 'button#btn_delete', function () {
-                var data = $('#datatable_1').DataTable().row( $(this).parents('tr') ).data();
+                var d1 = $('#datatable_1').DataTable().row( $(this).parents('tr') ).data();
+                var d2 = $('#datatable_1').DataTable().row( $(this).closest('tr.child').prev() ).data();
+                if (d1) {
+                  data = d1;
+                  }
+                else
+                {
+                  data = d2;
+                }
                 var d_id = (data['id']);
                 var d_volume = data['volume'];
                 var d_tanggal = data['tanggal'];
@@ -1126,8 +1120,16 @@ License: You must have a valid license purchased only from themeforest(the above
               });
 
                $('#datatable_1 tbody').on( 'click', '#btn_edit', function () {
-                var data = $('#datatable_1').DataTable().row( $(this).parents('tr') ).data();
-                  // alert( data['tanggal'] +"edit "+ data['volume'] );
+                var d1 = $('#datatable_1').DataTable().row( $(this).parents('tr') ).data();
+                var d2 = $('#datatable_1').DataTable().row( $(this).closest('tr.child').prev() ).data();
+                  // alert(data);
+                  if (d1) {
+                    data = d1;
+                  }
+                  else
+                  {
+                    data = d2;
+                  }
                   $("#m_modal_5 #id-value").val(data['id']);
                   $("#m_modal_5 #volume-value").val(data['volume']);
                   $("#m_modal_5 #m_datepicker_2").val(data['tanggal']);
